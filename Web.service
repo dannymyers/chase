@@ -1,0 +1,11 @@
+[Unit]
+Description=Web
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node /share/chase/web.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

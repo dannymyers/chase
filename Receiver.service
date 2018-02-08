@@ -1,0 +1,11 @@
+[Unit]
+Description=Receiver
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node /share/chase/receiver.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
