@@ -4,7 +4,8 @@
   "description": "",
   "main": "receiver.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "web": "nodemon web.js",
+    "receiver": "nodemon receiver.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "express": "^4.16.2",
     "i2c-bus": "^1.2.5",
     "moment": "^2.20.1",
+    "nodemon": "^1.14.12",
     "oled-font-5x7": "^1.0.0",
     "oled-i2c-bus": "^1.0.10",
     "serve-index": "^1.9.1",

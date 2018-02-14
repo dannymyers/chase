@@ -17,6 +17,12 @@ var myData = {
 var vm = new Vue({
   el: '#app',
   data: myData,
+  filters: {
+    moment: function (date) {
+      //      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+      return moment(date).fromNow();
+    }
+  },
   created: function() {
 
     getData = ()=> {

@@ -3,8 +3,9 @@ Description=Receiver
 After=multi-user.target
 
 [Service]
+WorkingDirectory=/share/chase/
 Type=simple
-ExecStart=/usr/bin/node /share/chase/receiver.js
+ExecStart=/usr/bin/npm run receiver
 Restart=on-abort
 
 [Install]

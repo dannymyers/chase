@@ -3,8 +3,9 @@ Description=Web
 After=multi-user.target
 
 [Service]
+WorkingDirectory=/share/chase/
 Type=simple
-ExecStart=/usr/bin/node /share/chase/web.js
+ExecStart=/usr/bin/npm run web
 Restart=on-abort
 
 [Install]
