@@ -6,6 +6,10 @@ var sqlite3=require('sqlite3-promise')
 var moment=require('moment')
 var db = new sqlite3.Database('/share/chase.db');
 
+var engine = require('ejs-locals');
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
+
 function first(arr){
   if(arr == null || arr.length == 0)
     return null;
@@ -21,6 +25,34 @@ app.get('/data', async (req, res) => {
  
 app.listen(8080)
 
-console.log(__dirname);
-app.use('/', express.static('public/index.html'));
+//console.log(__dirname);
+//app.use('/', express.static('public/index'));
+
+app.get('/', function(req, res) {
+  res.render('index', {title:"Main"});
+});
+
+app.get('/map', function(req, res) {
+  res.render('map', {title:"Map"});
+});
+
+app.get('/admin', function(req, res) {
+  res.render('admin', {title:"Admin"});
+});
+
 app.use(express.static('public'));
+app.use('/scripts', express.static(__dirname + '/node_modules/leaflet/dist/'));
+
+app.locals.scripts = [];
+app.locals.addScripts=function (all) {
+app.locals.scripts = [];
+    if (all != undefined) {
+        app.locals.scripts =  all.map(function(script) {
+            return "<script src='/" + script + "'></script>";
+        }).join('\n ');
+    }
+
+};
+app.locals.getScripts = function(req, res) {
+    return app.locals.scripts;
+};

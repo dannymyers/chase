@@ -1,0 +1,18 @@
+<% layout('layout') -%>
+<style>#map { height: 600px; }</style>
+<div id='map'></div>
+<script>
+    var mymap = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 10,
+    }).addTo(mymap);
+
+    var circle = L.circle([51.508, -0.11], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 500
+    }).addTo(mymap);
+
+</script>

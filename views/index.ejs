@@ -1,0 +1,27 @@
+<% layout('layout') -%>
+<% addScripts(['dashboard.js']) %>
+
+<div>Count: {{Data.LatestMessage.Count}}</div>
+<div>Rssi: {{Data.LatestMessage.Rssi}}</div>
+<div>Snr: {{Data.LatestMessage.Snr}}</div>
+<div>IsConnected: {{Data.LatestMessage.IsConnected}}</div>
+<div>IsGpsFixed: {{Data.LatestMessage.IsGpsFixed}}</div>
+<div>IsAltitudeWorking: {{Data.LatestMessage.IsAltitudeWorking}}</div>
+<div>IsCameraWorking: {{Data.LatestMessage.IsCameraWorking}}</div>
+<div>IsCellWorking: {{Data.LatestMessage.IsCellWorking}}</div>
+<div>IsExternalTempWorking: {{Data.LatestMessage.IsExternalTempWorking}}</div>
+<div>IsGpsWorking: {{Data.LatestMessage.IsGpsWorking}}</div>
+<div>IsGyroWorking: {{Data.LatestMessage.IsGyroWorking}}</div>
+<div>Latitude: {{Data.LatestMessage.Latitude}}</div>
+<div>Longitude: {{Data.LatestMessage.Longitude}}</div>
+<div>MslCurrentAltitudeMeters: {{Data.LatestMessage.MslCurrentAltitudeMeters}}</div>
+<div>CurrentAltitudeMeters: {{Data.LatestMessage.CurrentAltitudeMeters}}</div>
+<div>MaxAltitudeMeters: {{Data.LatestMessage.MaxAltitudeMeters}}</div>
+<div>InternalTemperatureInFahrenheit: {{Data.LatestMessage.InternalTemperatureInFahrenheit}}</div>
+<div>ExternalTemperatureInFahrenheit: {{Data.LatestMessage.ExternalTemperatureInFahrenheit}}</div>
+<div>MinExternalTemperatureInFahrenheit: {{Data.LatestMessage.MinExternalTemperatureInFahrenheit}}</div>
+<div>StrengthInDecibel: {{Data.LatestMessage.StrengthInDecibel}} dbm</div>
+<div>BatteryPercentFull: {{Data.LatestMessage.BatteryPercentFull}}%</div>
+<div>StrengthInDecibel: {{Data.LatestMessage.StrengthInDecibel}}</div>
+<div>SpeedOverGroundInKilometersPerHour: {{Data.LatestMessage.SpeedOverGroundInKilometersPerHour}}</div>
+<div>{{Data.LatestMessage.ReceivedDate | moment}}</div>
