@@ -10,6 +10,19 @@ var engine = require('ejs-locals');
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
+var https = require('https');
+var http = require('http');
+var fs = require('fs');
+
+// This line is from the Node.js HTTPS documentation.
+var options = {
+  key: fs.readFileSync('/share/server-key.pem'),
+  cert: fs.readFileSync('/share/server-cert.pem')
+};
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);
+
+
 function first(arr){
   if(arr == null || arr.length == 0)
     return null;
@@ -22,9 +35,18 @@ app.get('/data', async (req, res) => {
   data.LatestMessage = await dal.getLatestLoraMessageAsync();
   res.send(data);
 })
- 
-app.listen(8080)
 
+app.get('/emptydatabase', async (req, res) => {    
+  var data = {}
+  let dal = new Dal(db);
+  console.log('Empty Database')
+  await dal.emptyDatabaseAsync();
+  console.log('Get Lastest Message')
+  var message = await dal.getLatestLoraMessageAsync();
+  console.log(message);
+  res.send("Done");
+})
+ 
 //console.log(__dirname);
 //app.use('/', express.static('public/index'));
 
@@ -41,6 +63,7 @@ app.get('/admin', function(req, res) {
 });
 
 app.use(express.static('public'));
+app.use('/map', express.static('/share/map/'));
 app.use('/scripts', express.static(__dirname + '/node_modules/leaflet/dist/'));
 
 app.locals.scripts = [];

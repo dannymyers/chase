@@ -18,6 +18,13 @@ class Dal {
         return data;
     }
 
+    async emptyDatabaseAsync(){
+        var emptyDatabaseStatement = `
+DELETE FROM LoraMessage
+`;
+        await this.db.runAsync(emptyDatabaseStatement);
+    }
+
     async createLoraMessageTableAsync(){
         var createTableStatement = `
 CREATE TABLE IF NOT EXISTS LoraMessage

@@ -1,18 +1,40 @@
 <% layout('layout') -%>
-<style>#map { height: 600px; }</style>
+<style>#map { height: 800px; width:600px  }</style>
 <div id='map'></div>
 <script>
-    var mymap = L.map('map').setView([51.505, -0.09], 13);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 10,
+    var mymap = L.map('map').setView([32.9628, -117.0359], 13);
+    L.tileLayer('/map/{z}/{x}/{y}.png', {
+        attribution: '',
+        minZoom: 3,
+        maxZoom: 15,
+        maxBounds: [
+            [34.184542, -117.141724],
+            [32.505129, -114.515991]
+        ],
+        bounds: [
+            [34.184542, -117.141724],
+            [32.505129, -114.515991]
+        ]
     }).addTo(mymap);
 
-    var circle = L.circle([51.508, -0.11], {
+    var latLong = L.latLng(32.9628, -117.0359);
+    var circle = L.circle(latLong, {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
         radius: 500
     }).addTo(mymap);
+    L.marker(latLong).addTo(mymap).bindPopup("Testing 123");
+
+    mymap.locate({setView: true, maxZoom: 13});
+
+    function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(mymap).bindPopup("You are within " + radius + " meters from this point");
+    L.circle(e.latlng, radius).addTo(mymap);
+}
+
+mymap.on('locationfound', onLocationFound);
 
 </script>

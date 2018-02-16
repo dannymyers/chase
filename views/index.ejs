@@ -1,27 +1,63 @@
 <% layout('layout') -%>
-<% addScripts(['dashboard.js']) %>
 
 <div>Count: {{Data.LatestMessage.Count}}</div>
 <div>Rssi: {{Data.LatestMessage.Rssi}}</div>
 <div>Snr: {{Data.LatestMessage.Snr}}</div>
-<div>IsConnected: {{Data.LatestMessage.IsConnected}}</div>
-<div>IsGpsFixed: {{Data.LatestMessage.IsGpsFixed}}</div>
-<div>IsAltitudeWorking: {{Data.LatestMessage.IsAltitudeWorking}}</div>
-<div>IsCameraWorking: {{Data.LatestMessage.IsCameraWorking}}</div>
-<div>IsCellWorking: {{Data.LatestMessage.IsCellWorking}}</div>
-<div>IsExternalTempWorking: {{Data.LatestMessage.IsExternalTempWorking}}</div>
-<div>IsGpsWorking: {{Data.LatestMessage.IsGpsWorking}}</div>
-<div>IsGyroWorking: {{Data.LatestMessage.IsGyroWorking}}</div>
+
+<div>GPS: <i class="fa fa-map-marker" v-bind:class="Data.LatestMessage.IsGpsWorking && Data.LatestMessage.IsGpsFixed ? 'text-success' : Data.LatestMessage.IsGpsWorking ? 'text-info' : 'text-danger'"></i></div>
+<div>Battery: <i class="fa fa-battery-full"></i>  {{Data.LatestMessage.BatteryPercentFull}}%</div>
+
+<div>Altitude: <i class="fa fa-level-up-alt" v-bind:class="Data.LatestMessage.IsAltitudeWorking ? 'text-success' : 'text-danger'"></i></div>
+
+<div>Camera: <i class="fa fa-camera" v-bind:class="Data.LatestMessage.IsCameraWorking ? 'text-success' : 'text-danger'"></i></div>
+
+<div>Cell: <i class="fa fa-signal" v-bind:class="Data.LatestMessage.IsCellWorking && Data.LatestMessage.IsConnected ? 'text-success' : Data.LatestMessage.IsCellWorking ? 'text-info' : 'text-danger'"></i> {{Data.LatestMessage.StrengthInDecibel}} dbm</div>
+
+<div>Temp: <i class="fa fa-thermometer-full" v-bind:class="Data.LatestMessage.IsExternalTempWorking ? 'text-success' : 'text-danger'"></i></div>
+
+<div>Gyro: <i class="fa fa-cube" v-bind:class="Data.LatestMessage.IsGyroWorking ? 'text-success' : 'text-danger'"></i></div>
+
 <div>Latitude: {{Data.LatestMessage.Latitude}}</div>
 <div>Longitude: {{Data.LatestMessage.Longitude}}</div>
-<div>MslCurrentAltitudeMeters: {{Data.LatestMessage.MslCurrentAltitudeMeters}}</div>
-<div>CurrentAltitudeMeters: {{Data.LatestMessage.CurrentAltitudeMeters}}</div>
-<div>MaxAltitudeMeters: {{Data.LatestMessage.MaxAltitudeMeters}}</div>
-<div>InternalTemperatureInFahrenheit: {{Data.LatestMessage.InternalTemperatureInFahrenheit}}</div>
-<div>ExternalTemperatureInFahrenheit: {{Data.LatestMessage.ExternalTemperatureInFahrenheit}}</div>
-<div>MinExternalTemperatureInFahrenheit: {{Data.LatestMessage.MinExternalTemperatureInFahrenheit}}</div>
-<div>StrengthInDecibel: {{Data.LatestMessage.StrengthInDecibel}} dbm</div>
-<div>BatteryPercentFull: {{Data.LatestMessage.BatteryPercentFull}}%</div>
-<div>StrengthInDecibel: {{Data.LatestMessage.StrengthInDecibel}}</div>
-<div>SpeedOverGroundInKilometersPerHour: {{Data.LatestMessage.SpeedOverGroundInKilometersPerHour}}</div>
-<div>{{Data.LatestMessage.ReceivedDate | moment}}</div>
+<div>GPS Altitude: {{Data.LatestMessage.MslCurrentAltitudeMeters * 3.28084}} feet</div>
+<div>Altitude: {{Data.LatestMessage.CurrentAltitudeMeters * 3.28084}} feet</div>
+<div>Max Altitude: {{Data.LatestMessage.MaxAltitudeMeters * 3.28084}} feet</div>
+<div>Internal Temp: {{Data.LatestMessage.InternalTemperatureInFahrenheit}} F</div>
+<div>External Temp: {{Data.LatestMessage.ExternalTemperatureInFahrenheit}} F</div>
+<div>Min External Temp: {{Data.LatestMessage.MinExternalTemperatureInFahrenheit}} F</div>
+
+<div>Speed Over Ground: {{Data.LatestMessage.SpeedOverGroundInKilometersPerHour * 0.621371}} MPH</div>
+<div>Last Message: {{Data.LatestMessage.ReceivedDate | moment}}</div>
+<script>
+var myData = {    
+  Data: {
+  }
+}
+var vm = new Vue({
+  el: '#app',
+  data: myData,
+  filters: {
+    moment: function (date) {
+      //      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+      return moment(date).fromNow();
+    }
+  },
+  created: function() {
+
+    getData = ()=> {
+      httpGetAsync("/data", (result)=>{
+        var newData = JSON.parse(result);
+        if(myData.Data.LatestMessage == null || myData.Data.LatestMessage.Count != newData.LatestMessage.Count)
+          playSoundOrVibrate();
+        myData.Data = newData;
+      });
+    }
+    window.setInterval(()=>
+    {
+      getData();
+    }, 1000);
+    getData();
+
+  }
+});
+</script>
