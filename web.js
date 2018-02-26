@@ -36,14 +36,32 @@ app.get('/data', async (req, res) => {
   res.send(data);
 })
 
+app.get('/mapData', async (req, res) => {    
+  let dal = new Dal(db);
+  var id = req.query.id
+  var data = await dal.getAllLoraMessagesAsync(id);
+  res.send(data);
+})
+
 app.get('/emptydatabase', async (req, res) => {    
-  var data = {}
   let dal = new Dal(db);
   console.log('Empty Database')
   await dal.emptyDatabaseAsync();
   console.log('Get Lastest Message')
   var message = await dal.getLatestLoraMessageAsync();
   console.log(message);
+  res.send("Done");
+})
+ 
+app.get('/reboot', async (req, res) => {    
+  console.log('Reboot')
+  require('child_process').exec('sudo shutdown -r now', console.log)
+  res.send("Done");
+})
+ 
+app.get('/shutdown', async (req, res) => {    
+  console.log('Shutdown')
+  require('child_process').exec('sudo shutdown -h now', console.log)
   res.send("Done");
 })
  

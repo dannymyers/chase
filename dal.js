@@ -18,6 +18,13 @@ class Dal {
         return data;
     }
 
+    async getAllLoraMessagesAsync(sinceLoraMessageKey){
+        var query = "SELECT * FROM LoraMessage xxx ORDER BY LoraMessageKey LIMIT 20";
+        query = query.replace("xxx", sinceLoraMessageKey == null ? "" : ("WHERE LoraMessageKey > " + sinceLoraMessageKey));
+        var data = await this.db.allAsync(query);
+        return data;
+    }
+
     async emptyDatabaseAsync(){
         var emptyDatabaseStatement = `
 DELETE FROM LoraMessage
@@ -58,6 +65,14 @@ CREATE TABLE IF NOT EXISTS LoraMessage
     }
 
     async insertLoraMessageAsync(lm, rssi, snr){
+
+        if(lm.latitude != null && (lm.latitude > 90 || lm.latitude < -90))
+            return;
+        if(lm.longitude != null && (lm.longitude > 180 || lm.longitude < -180))
+            return;
+        if(lm.batteryPercentFull != null && (lm.batteryPercentFull > 100 || lm.batteryPercentFull < 0))
+            return;
+    
         var insertStatement = `
         INSERT INTO LoraMessage
         (

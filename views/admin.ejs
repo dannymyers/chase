@@ -1,12 +1,43 @@
 <% layout('layout') -%>
 
 <h1>Admin</h1>
+<style>
+  .w100 { width:100%}
+</style>
 <br>
-<button onclick="emptyDatabase()">Empty Database</button>
+<button class="btn btn-primary w100" onclick="emptyDatabase()">Empty Database</button>
 <script>
     emptyDatabase = () => {
-      httpGetAsync("/emptydatabase", (result)=>{
-         alert('hi5');
+      if(confirm("Empty Database?")) {
+        httpGetAsync("/emptydatabase", (result)=>{
+          alert(result);
+        });
+      }
+    }
+</script>
+<br>
+<br>
+<br>
+<button class="w100 btn btn-warning" onclick="reboot()">Reboot</button>
+<script>
+    reboot = () => {
+      if(confirm("Reboot?")) {
+        httpGetAsync("/reboot", (result)=>{
+          alert(result);
+        });
+      }
+    }
+</script>
+<br>
+<br>
+<br>
+<button class="w100 btn btn-danger" onclick="shutdown()">Shutdown</button>
+<script>
+    shutdown = () => {
+      if(confirm("Shutdown?")) {
+      httpGetAsync("/shutdown", (result)=>{
+        alert(result);
       });
+    }
     }
 </script>
