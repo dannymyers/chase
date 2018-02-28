@@ -84,6 +84,9 @@ app.use(express.static('public'));
 app.use('/map', express.static('/share/map/'));
 app.use('/scripts', express.static(__dirname + '/node_modules/leaflet/dist/'));
 
+app.use('/chase.db', express.static('/share/chase.db'));
+
+
 app.locals.scripts = [];
 app.locals.addScripts=function (all) {
 app.locals.scripts = [];

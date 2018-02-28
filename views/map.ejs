@@ -28,9 +28,13 @@
     mymap.locate({setView: true, maxZoom: 13});
     function onLocationFound(e) {
         var radius = e.accuracy / 2;
-
         L.marker(e.latlng).addTo(mymap).bindPopup("You are within " + radius + " meters from this point");
-        L.circle(e.latlng, radius).addTo(mymap);
+        var circle = L.circle(e.latlng, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+            }).addTo(mymap);
     }
     mymap.on('locationfound', onLocationFound);
 
@@ -41,19 +45,35 @@
         var newData = JSON.parse(result);
         newData.forEach(a=>{
             var latLong = L.latLng(a.Latitude, a.Longitude);
-            /*var circle = L.circle(latLong, {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 500
-            }).addTo(mymap);*/
-            L.marker(latLong).addTo(mymap).bindPopup(JSON.stringify(a));
+            var tooltip = "";
+            tooltip += "<h1>" + a.Count + "</h1>"
+            tooltip += "Rssi: " + a.Rssi + "<br>"
+            tooltip += "Snr: " + a.Snr + "<br>"
+            tooltip += "Battery: " + a.BatteryPercentFull + "%<br>"
+            tooltip += "Altitude: " + a.CurrentAltitudeMeters + "m<br>"
+            tooltip += "External Temp: " + a.ExternalTemperatureInFahrenheit + "F<br>"
+            tooltip += "Internal Temp: " + a.InternalTemperatureInFahrenheit + "F<br>"
+            tooltip += "Altimeter Working?: " + a.IsAltitudeWorking + "<br>"
+            tooltip += "Camera Working?: " + a.IsCameraWorking + "<br>"
+            tooltip += "Cell Working?: " + a.IsCellWorking + "<br>"
+            tooltip += "Cell Connected?: " + a.IsConnected + "<br>"
+            tooltip += "External Temp Working?: " + a.IsExternalTempWorking + "<br>"
+            tooltip += "GPS Fixed?: " + a.IsGpsFixed + "<br>"
+            tooltip += "GPS Working?: " + a.IsGpsWorking + "<br>"
+            tooltip += "Gyro Working?: " + a.IsGyroWorking + "<br>"
+            tooltip += "Latitude: " + a.Latitude + "<br>"
+            tooltip += "Longitude: " + a.Longitude + "<br>"
+            tooltip += "Max Altitude: " + a.MaxAltitudeMeters + "m<br>"
+            tooltip += "Min Ext Temp: " + a.MinExternalTemperatureInFahrenheit + "F<br>"
+            tooltip += "MSL Altitude: " + a.MslCurrentAltitudeMeters + "m<br>"
+            tooltip += "Received Date: " + a.ReceivedDate + "<br>"
+            tooltip += "Speed: " + a.SpeedOverGroundInKilometersPerHour + "kph<br>"
+            tooltip += "Signal: " + a.StrengthInDecibel + "db<br>"
+            L.marker(latLong).addTo(mymap).bindPopup(tooltip);
         }); 
         if(newData.length > 0)
         {
-            console.log(newData[newData.length -1]);
             lastLoraMessageKey = newData[newData.length -1].LoraMessageKey;
-            console.log(lastLoraMessageKey);
         }
 
 

@@ -5,7 +5,7 @@
   .w100 { width:100%}
 </style>
 <br>
-<button class="btn btn-primary w100" onclick="emptyDatabase()">Empty Database</button>
+<button class="btn w100" onclick="emptyDatabase()"><i class="fa fa-database"></i> Empty Database</button>
 <script>
     emptyDatabase = () => {
       if(confirm("Empty Database?")) {
@@ -18,7 +18,7 @@
 <br>
 <br>
 <br>
-<button class="w100 btn btn-warning" onclick="reboot()">Reboot</button>
+<button class="w100 btn" onclick="reboot()"><i class="fa fa-sync"></i> Reboot</button>
 <script>
     reboot = () => {
       if(confirm("Reboot?")) {
@@ -31,7 +31,7 @@
 <br>
 <br>
 <br>
-<button class="w100 btn btn-danger" onclick="shutdown()">Shutdown</button>
+<button class="w100 btn" onclick="shutdown()"><i class="fa fa-power-off"></i> Shutdown</button>
 <script>
     shutdown = () => {
       if(confirm("Shutdown?")) {
@@ -39,5 +39,14 @@
         alert(result);
       });
     }
+    }
+</script>
+<br>
+<br>
+<br>
+<button class="w100 btn" onclick="download()"><i class="fa fa-download"></i> Download Database</button>
+<script>
+    download = () => {
+      window.open("/chase.db");
     }
 </script>
