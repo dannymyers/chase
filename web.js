@@ -29,10 +29,34 @@ function first(arr){
   return arr[0];
 }
 
+moment.updateLocale('en', {
+  relativeTime : {
+      future: "in %s",
+      past:   "%s ago",
+      s  : '%d seconds',
+      ss : '%d seconds',
+      m:  "%d minutes",
+      mm: "%d minutes",
+      h:  "%d hour(s)",
+      hh: "%d hour(s)",
+      d:  "a day",
+      dd: "%d days",
+      M:  "a month",
+      MM: "%d months",
+      y:  "a year",
+      yy: "%d years"
+  }
+});
+
 app.get('/data', async (req, res) => {    
   var data = {}
   let dal = new Dal(db);
   data.LatestMessage = await dal.getLatestLoraMessageAsync();
+
+  //Hack
+  if(data.LatestMessage != null && data.LatestMessage.ReceivedDate != null) {
+    data.LatestMessage.ReceivedDate = moment(data.LatestMessage.ReceivedDate).fromNow()
+  }
   res.send(data);
 })
 

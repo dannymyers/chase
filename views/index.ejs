@@ -14,7 +14,7 @@
           </td>
       </tr>
       <tr>
-          <td>{{Data.LatestMessage.ReceivedDate | moment}}</td>
+          <td>{{Data.LatestMessage.ReceivedDate}}</td>
           <td colspan="2">Rssi {{Data.LatestMessage.Rssi}}</td>
           <td colspan="2">Snr {{Data.LatestMessage.Snr}}</td>
       </tr>
@@ -29,10 +29,9 @@
           <td colspan="2">{{Data.LatestMessage.MaxAltitudeMeters * 3.28084}} ft</td>
       </tr>
       <tr>
-          <td>Temp (Int/Ext/Min Ext)</td>
-          <td>{{Data.LatestMessage.ExternalTemperatureInFahrenheit}} F</td>
-          <td>{{Data.LatestMessage.MinExternalTemperatureInFahrenheit}} F</td>
-          <td colspan="2">{{Data.LatestMessage.InternalTemperatureInFahrenheit}} F</td>
+        <td>{{Data.LatestMessage.InternalTemperatureInFahrenheit}} F Inside</td>
+        <td colspan="2">{{Data.LatestMessage.ExternalTemperatureInFahrenheit}} F</td>
+        <td colspan="2">{{Data.LatestMessage.MinExternalTemperatureInFahrenheit}} F (Min)</td>
       </tr>
     </tbody>
 </table>
@@ -83,13 +82,17 @@ var vm = new Vue({
               playSoundOrVibrate();
               if(marker != null)
               mymap.removeLayer(marker);
-              var latlng = [newData.LatestMessage.Latitude, newData.LatestMessage.Longitude];
+              var lat = newData.LatestMessage.Latitude;
+              var lng = newData.LatestMessage.Longitude;
+              var latlng = [lat, lng];
+              if(marker == null)mymap.setView(latlng);//Set only first time
               marker = L.marker(latlng)
-              marker.addTo(mymap).bindPopup("Latitude: " + newData.LatestMessage.Latitude + "<br>Longitude: " + newData.LatestMessage.Longitude);
-              mymap.setView(latlng, 15);
+              marker.addTo(mymap).bindPopup("<a href='http://maps.google.com/maps?daddr="+lat+","+lng+"&mode=dri'>Latitude: " + lat + "<br>Longitude: " + lng + "</a>");
             }
             myData.Data = newData;
           }
+
+          
       });
     }
     window.setInterval(()=>

@@ -19,7 +19,7 @@ class Dal {
     }
 
     async getAllLoraMessagesAsync(sinceLoraMessageKey){
-        var query = "SELECT * FROM LoraMessage xxx ORDER BY LoraMessageKey LIMIT 20";
+        var query = "SELECT * FROM LoraMessage xxx ORDER BY LoraMessageKey LIMIT 40";
         query = query.replace("xxx", sinceLoraMessageKey == null ? "" : ("WHERE LoraMessageKey > " + sinceLoraMessageKey));
         var data = await this.db.allAsync(query);
         return data;
