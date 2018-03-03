@@ -9,7 +9,7 @@ var sx127x = new SX127x({
   frequency: 433E6,
   resetPin:	6,
   dio0Pin:	5,
-  //spreadingFactor: 12
+  spreadingFactor: 12
 });
 
 

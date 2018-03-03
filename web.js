@@ -100,6 +100,10 @@ app.get('/map', function(req, res) {
   res.render('map', {title:"Map"});
 });
 
+app.get('/charts', function(req, res) {
+  res.render('charts', {title:"Charts"});
+});
+
 app.get('/admin', function(req, res) {
   res.render('admin', {title:"Admin"});
 });
@@ -124,3 +128,49 @@ app.locals.scripts = [];
 app.locals.getScripts = function(req, res) {
     return app.locals.scripts;
 };
+
+sendChartAsync = async (res, col1, dateColumn, table) => {
+  var script = "SELECT " + col1  + " AS a, " + dateColumn + " AS b FROM " + table + " ORDER BY " + dateColumn;
+  var data = await db.allAsync(script);
+  var toReturn = [];
+  data.forEach(element => {
+    toReturn.push([moment(element.b).unix() * 1000, Number(element.a)]);
+  });
+  res.send(toReturn);
+}
+
+app.get('/gpsAltitude', async (req, res) => {    
+  await sendChartAsync(res ,"(MslCurrentAltitudeMeters  * 3.28084)", "ReceivedDate", "LoraMessage");
+})
+ 
+app.get('/altitude', async (req, res) => {    
+  await sendChartAsync(res ,"(CurrentAltitudeMeters * 3.28084)", "ReceivedDate", "LoraMessage");
+})
+ 
+app.get('/internalTemp', async (req, res) => {    
+  await sendChartAsync(res ,"InternalTemperatureInFahrenheit", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/externalTemp', async (req, res) => {    
+  await sendChartAsync(res ,"ExternalTemperatureInFahrenheit", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/cellSignalStrength', async (req, res) => {    
+  await sendChartAsync(res ,"StrengthInDecibel", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/battery', async (req, res) => {    
+  await sendChartAsync(res ,"BatteryPercentFull", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/speed', async (req, res) => {    
+  await sendChartAsync(res ,"(SpeedOverGroundInKilometersPerHour * 0.621371)", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/rssi', async (req, res) => {    
+  await sendChartAsync(res ,"Rssi", "ReceivedDate", "LoraMessage");
+})
+
+app.get('/snr', async (req, res) => {    
+  await sendChartAsync(res ,"Snr", "ReceivedDate", "LoraMessage");
+})
